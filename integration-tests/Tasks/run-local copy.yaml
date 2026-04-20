@@ -62,50 +62,71 @@ spec:
     - name: clone-and-check
       resources:
         limits:
-          memory: '8Gi' # Ensure this is higher than max-old-space-size
-          cpu: '2000m'
+          memory: "8Gi" # Ensure this is higher than max-old-space-size
+          cpu: "2000m"
         requests:
-          memory: '4Gi'
-          cpu: '1000m'
+          memory: "4Gi"
+          cpu: "1000m"
       env:
         - name: NODE_OPTIONS
-          value: '--max-old-space-size=4096' # 4GB or higher (e.g., 8192)
+          value: "--max-old-space-size=4096" # 4GB or higher (e.g., 8192)
       image: node:lts-alpine
       script: |
         #!/bin/sh
+        export CYPRESS_CACHE_FOLDER=//workspace/source/cypress
         set -eu
-
-        echo "=== Cloning repository and checking for changes ==="
+        apk add --no-cache git
+        echo "=== Cloning repository and intrument build ==="
 
         # Clone to /workspace/source
         git clone $(params.git-url) /workspace/source
+        git clone https://github.com/abhinandan13jan/konflux-ui-test /workspace/dummy
+        cp /workspace/dummy/e2e-tests/Containerfile.instrumented /workspace/source/e2e-tests/Containerfile.instrumented
+        cp /workspace/dummy/.dockerignore.instrumented /workspace/source/.dockerignore.instrumented
+        cp /workspace/dummy/.dockerignore.instrumented.cypress /workspace/source/.dockerignore.instrumented.cypress
+
+        rm /workspace/source/.dockerignore
+        cp /workspace/source/.dockerignore.instrumented /workspace/source/.dockerignore
+
+        rm /workspace/source/e2e-tests/.dockerignore
+        cp /workspace/source/.dockerignore.instrumented.cypress /workspace/source//e2e-tests/.dockerignore
+
         cd /workspace/source
-        git checkout $(params.git-revision)
 
-        # Check if e2e-tests directory has changes compared to target branch
-        git fetch origin $(params.target-branch)
+        ls -la
 
-        if git diff --name-only origin/$(params.target-branch)...HEAD | grep -q "^e2e-tests/"; then
-          echo "✅ Changes detected in e2e-tests/"
-          echo "true" > /workspace/build-needed
-        else
-          echo "ℹ️  No changes in e2e-tests/"
-          echo "false" > /workspace/build-needed
-          echo -n "$(params.default-test-image)" > $(results.test-image.path)
-        fi
+        yarn install
+        yarn run build:instrumented
+        cp /workspace/source/dist/* /workspace/source/src/
+
+        # cd /workspace/source/e2e-tests
+        # umask 0002
+        # npm i
+        # node_modules/.bin/cypress install
+        # mkdir -p ../artifacts
+        # chmod -R a+rwx ../artifacts ${CYPRESS_CACHE_FOLDER}
+
+        rm /workspace/source/.dockerignore
+        cp /workspace/source/.dockerignore.instrumented /workspace/source/.dockerignore
+
+        rm /workspace/source/e2e-tests/.dockerignore
+        cp /workspace/source/.dockerignore.instrumented.cypress /workspace/source//e2e-tests/.dockerignore
+
+        echo "listing source"
+        ls -la /workspace/source
 
     - name: build-with-kaniko
       image: gcr.io/kaniko-project/executor:debug
       resources:
         limits:
-          memory: '8Gi' # Ensure this is higher than max-old-space-size
-          cpu: '2000m'
+          memory: "8Gi" # Ensure this is higher than max-old-space-size
+          cpu: "2000m"
         requests:
-          memory: '4Gi'
-          cpu: '1000m'
+          memory: "4Gi"
+          cpu: "1000m"
       env:
         - name: NODE_OPTIONS
-          value: '--max-old-space-size=4096' # 4GB or higher (e.g., 8192)
+          value: "--max-old-space-size=4096" # 4GB or higher (e.g., 8192)
       volumeMounts:
         - name: quay-auth
           mountPath: /secrets/quay
@@ -135,15 +156,15 @@ spec:
 
           # Build and push
           /kaniko/executor \
-            --context=/workspace/source/e2e-tests \
-            --dockerfile=/workspace/source/e2e-tests/Containerfile \
-            --destination=$(params.test-image-repo):pr-$(params.pull-request-number) \
+            --context=/workspace/source/ \
+            --dockerfile=/workspace/source/e2e-tests/Containerfile.instrumented \
+            --destination=$(params.test-image-repo):pr-$(params.pull-request-number)--instrumented \
             --cache=false \
             --verbosity=info \
             --skip-tls-verify
 
-          echo -n "$(params.test-image-repo):pr-$(params.pull-request-number)" > $(results.test-image.path)
-          echo "✅ Image built and pushed: $(params.test-image-repo):pr-$(params.pull-request-number)"
+          echo -n "$(params.test-image-repo):pr-$(params.pull-request-number)--instrumented" > $(results.test-image.path)
+          echo "✅ Image built and pushed: $(params.test-image-repo):pr-$(params.pull-request-number)--instrumented"
 
     - name: show-result
       image: alpine:latest
@@ -151,3 +172,4 @@ spec:
         #!/bin/sh
         echo ""
         echo "📦 Final test image: $(cat $(results.test-image.path))"
+
