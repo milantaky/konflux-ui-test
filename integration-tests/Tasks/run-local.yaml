@@ -74,7 +74,7 @@ spec:
       script: |
         #!/bin/sh
         set -eu
-
+        apk add --no-cache git
         echo "=== Cloning repository and checking for changes ==="
 
         # Clone to /workspace/source
