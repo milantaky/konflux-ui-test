@@ -22,6 +22,9 @@ COPY aliases.config.js /tmp/aliases.config.js
 COPY --chown=node:root --chmod=775 e2e-tests /tmp/e2e
 RUN chmod -R 775 /tmp/e2e
 
+RUN cd /tmp/ && \
+    npm i yarn --f
+
 RUN cd /tmp/e2e && \
     umask 0002 && \
     npm i && \
