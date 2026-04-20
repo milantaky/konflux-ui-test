@@ -112,12 +112,6 @@ spec:
         rm /workspace/source/e2e-tests/.dockerignore
         cp /workspace/source/.dockerignore.instrumented.cypress /workspace/source//e2e-tests/.dockerignore
 
-
-        echo "listing host"
-        ls -la /workspace/source
-        ls -la /workspace/source/artifacts
-        ls -la /workspace/source/cypress
-
     - name: build-with-kaniko
       image: gcr.io/kaniko-project/executor:debug
       resources:
