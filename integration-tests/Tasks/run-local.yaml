@@ -80,7 +80,10 @@ spec:
 
         # Clone to /workspace/source
         git clone $(params.git-url) /workspace/source
+        cd /workspace/source
+        git fetch $(params.git-url) pull/$(params.pull-request-number)/head:pr-$(params.pull-request-number)
         git clone https://github.com/abhinandan13jan/konflux-ui-test /workspace/dummy
+        git checkout pr-$(params.pull-request-number)
         cp /workspace/dummy/e2e-tests/Containerfile.instrumented /workspace/source/e2e-tests/Containerfile.instrumented
         cp /workspace/dummy/.dockerignore.instrumented /workspace/source/.dockerignore.instrumented
         cp /workspace/dummy/.dockerignore.instrumented.cypress /workspace/source/.dockerignore.instrumented.cypress
@@ -90,8 +93,6 @@ spec:
 
         rm /workspace/source/e2e-tests/.dockerignore
         cp /workspace/source/.dockerignore.instrumented.cypress /workspace/source//e2e-tests/.dockerignore
-
-        cd /workspace/source
 
         ls -la
 
