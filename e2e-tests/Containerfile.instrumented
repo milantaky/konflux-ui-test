@@ -7,8 +7,8 @@ RUN wget "https://github.com/sigstore/cosign/releases/download/v2.4.0/cosign-lin
     mv cosign-linux-amd64 /usr/local/bin/cosign && \
     chmod +x /usr/local/bin/cosign
 
-FROM node:lts-alpine
-# WORKDIR /tmp/
+# FROM node:lts-alpine
+# # WORKDIR /tmp/
 
 RUN echo "List"
 RUN ls -la tmp
@@ -26,8 +26,6 @@ RUN cd tmp/e2e && \
     node_modules/.bin/cypress install && \
     mkdir -p tmp/artifacts && \
     chmod -R a+rwx /tmp/artifacts ${CYPRESS_CACHE_FOLDER}
-
-FROM quay.io/konflux_ui_qe/konflux-ui-tests-base:5.8.0
 
 COPY --chown=node:root --chmod=775 e2e-tests/entrypoint.sh /tmp/
 
