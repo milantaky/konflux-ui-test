@@ -97,7 +97,7 @@ spec:
 
         # yarn install
         # yarn run build:instrumented
-        cp /workspace/source/dist/* /workspace/source/src/
+        # cp /workspace/source/dist/* /workspace/source/src/
 
         # cd /workspace/source/e2e-tests
         # umask 0002
