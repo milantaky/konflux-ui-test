@@ -66,6 +66,10 @@ spec:
       description: 'Skip deploying Konflux (use existing deployment for debugging)'
       default: 'false'
       type: string
+    - name: skip-monitoring
+      description: 'Skip deploying Konflux (use existing deployment for debugging)'
+      default: 'true'
+      type: string
     - name: skip-deprovision
       description: 'Skip deprovisioning Kind cluster (keep cluster for debugging)'
       default: 'false'
@@ -244,6 +248,9 @@ spec:
         - input: '$(tasks.konflux-ui-pr-metadata.results.pull-request-author)'
           operator: notin
           values: ['red-hat-konflux[bot]']
+        - input: '$(params.skip-monitoring)'
+          operator: in
+          values: ['false']
       runAfter:
         - deploy-konflux
       taskRef:
