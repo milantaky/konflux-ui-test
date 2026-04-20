@@ -32,3 +32,17 @@ spec:
             value: main
           - name: pathInRepo
             value: integration-tests/Tasks/run-local.yaml
+
+    - name: test-image
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: https://github.com/abhinandan13jan/konflux-ui-test
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: integration-tests/Tasks/test-image.yaml
+      params:
+        - name: test-image
+          value: '$(tasks.run-local.results.test-image)'

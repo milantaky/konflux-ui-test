@@ -84,18 +84,6 @@ spec:
         cp /workspace/dummy/e2e-tests/Containerfile.instrumented /workspace/source/e2e-tests/Containerfile.instrumented
         cp /workspace/dummy/.dockerignore.instrumented /workspace/source/.dockerignore.instrumented
         cp /workspace/dummy/.dockerignore.instrumented.cypress /workspace/source/.dockerignore.instrumented.cypress
-        cd /workspace/source
-
-        yarn install
-        yarn run build:instrumented
-        cp /workspace/source/dist/* /workspace/source/src/
-
-        cd /workspace/source/e2e-tests
-        umask 0002
-        npm i
-        node_modules/.bin/cypress install
-        mkdir -p ../artifacts
-        chmod -R a+rwx ../artifacts ${CYPRESS_CACHE_FOLDER}
 
         rm /workspace/source/.dockerignore
         cp /workspace/source/.dockerignore.instrumented /workspace/source/.dockerignore
@@ -103,11 +91,32 @@ spec:
         rm /workspace/source/e2e-tests/.dockerignore
         cp /workspace/source/.dockerignore.instrumented.cypress /workspace/source//e2e-tests/.dockerignore
 
+        cd /workspace/source
 
-        echo "listing host"
-        ls -la /workspace/source
-        ls -la /workspace/source/artifacts
-        ls -la /workspace/source/cypress
+        ls -la
+
+        # yarn install
+        # yarn run build:instrumented
+        cp /workspace/source/dist/* /workspace/source/src/
+
+        # cd /workspace/source/e2e-tests
+        # umask 0002
+        # npm i
+        # node_modules/.bin/cypress install
+        # mkdir -p ../artifacts
+        # chmod -R a+rwx ../artifacts ${CYPRESS_CACHE_FOLDER}
+
+        # rm /workspace/source/.dockerignore
+        # cp /workspace/source/.dockerignore.instrumented /workspace/source/.dockerignore
+
+        # rm /workspace/source/e2e-tests/.dockerignore
+        # cp /workspace/source/.dockerignore.instrumented.cypress /workspace/source//e2e-tests/.dockerignore
+
+
+        # echo "listing host"
+        # ls -la /workspace/source
+        # ls -la /workspace/source/artifacts
+        # ls -la /workspace/source/cypress
 
     - name: build-with-kaniko
       image: gcr.io/kaniko-project/executor:debug
