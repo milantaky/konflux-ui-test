@@ -9,7 +9,16 @@ RUN wget "https://github.com/sigstore/cosign/releases/download/v2.4.0/cosign-lin
 
 USER node:0
 
-COPY --chown=node:root --chmod=775 . /tmp/
+COPY @types /tmp/@types
+COPY public /tmp/public
+COPY src /tmp/src
+COPY package.json /tmp/package.json
+COPY tsconfig.json /tmp/tsconfig.json
+COPY webpack.config.js /tmp/webpack.config.js
+COPY webpack.instrumented.config.js /tmp/webpack.instrumented.config.js
+COPY webpack.prod.config.js /tmp/webpack.prod.config.js
+COPY yarn.lock /tmp/yarn.lock
+COPY aliases.config.js /tmp/aliases.config.js
 COPY --chown=node:root --chmod=775 e2e-tests /tmp/e2e
 RUN chmod -R 775 /tmp/e2e
 
