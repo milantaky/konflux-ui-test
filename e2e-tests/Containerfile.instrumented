@@ -27,7 +27,8 @@ RUN cd tmp/e2e && \
     mkdir -p tmp/artifacts && \
     chmod -R a+rwx /tmp/artifacts ${CYPRESS_CACHE_FOLDER}
 
-WORKDIR /tmp/
+FROM quay.io/konflux_ui_qe/konflux-ui-tests-base:5.8.0
+
 COPY --chown=node:root --chmod=775 e2e-tests/entrypoint.sh /tmp/
 
 ENTRYPOINT ["/tmp/entrypoint.sh"]
