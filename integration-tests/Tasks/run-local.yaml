@@ -154,7 +154,7 @@ spec:
           # Build and push
           /kaniko/executor \
             --context=/workspace/source/ \
-            --dockerfile=/workspace/source/e2e-tests/Containerfile.instrumented \
+            --dockerfile=/workspace/source/e2e-tests/Containerfile \
             --destination=$(params.test-image-repo):pr-$(params.pull-request-number)--instrumented \
             --cache=false \
             --verbosity=info \
