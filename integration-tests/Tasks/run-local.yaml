@@ -95,9 +95,9 @@ spec:
 
         ls -la
 
-        # yarn install
-        # yarn run build:instrumented
-        # cp /workspace/source/dist/* /workspace/source/src/
+        yarn install
+        yarn run build:instrumented
+        cp /workspace/source/dist/* /workspace/source/src/
 
         # cd /workspace/source/e2e-tests
         # umask 0002
@@ -106,17 +106,17 @@ spec:
         # mkdir -p ../artifacts
         # chmod -R a+rwx ../artifacts ${CYPRESS_CACHE_FOLDER}
 
-        # rm /workspace/source/.dockerignore
-        # cp /workspace/source/.dockerignore.instrumented /workspace/source/.dockerignore
+        rm /workspace/source/.dockerignore
+        cp /workspace/source/.dockerignore.instrumented /workspace/source/.dockerignore
 
-        # rm /workspace/source/e2e-tests/.dockerignore
-        # cp /workspace/source/.dockerignore.instrumented.cypress /workspace/source//e2e-tests/.dockerignore
+        rm /workspace/source/e2e-tests/.dockerignore
+        cp /workspace/source/.dockerignore.instrumented.cypress /workspace/source//e2e-tests/.dockerignore
 
 
-        # echo "listing host"
-        # ls -la /workspace/source
-        # ls -la /workspace/source/artifacts
-        # ls -la /workspace/source/cypress
+        echo "listing host"
+        ls -la /workspace/source
+        ls -la /workspace/source/artifacts
+        ls -la /workspace/source/cypress
 
     - name: build-with-kaniko
       image: gcr.io/kaniko-project/executor:debug
