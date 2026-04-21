@@ -283,8 +283,10 @@ spec:
           - name: pathInRepo
             value: integration-tests/Tasks/run-e2e-konflux-ui-skipped.yaml
       params:
+        # - name: test-image
+        #   value: '$(tasks.build-test-image.results.test-image)'
         - name: test-image
-          value: '$(tasks.build-test-image.results.test-image)'
+          value: 'quay.io/carawang/konflux-ui-test:pr-53'
         - name: test-name
           value: '$(context.pipelineRun.name)'
         - name: git-repo
