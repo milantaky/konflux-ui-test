@@ -195,6 +195,7 @@ spec:
         # export CYPRESS_KONFLUX_BASE_URL=$(cat /shared/base-url)
         # echo "Konflux base URL: ${CYPRESS_KONFLUX_BASE_URL}"
         export CYPRESS_KONFLUX_BASE_URL=127.0.0.1
+        ls -la
         echo "=== Running E2E tests ==="
         SPEC_FILE="$(params.spec-file)"
         echo "Running test spec: ${SPEC_FILE}"

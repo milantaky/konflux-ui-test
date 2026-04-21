@@ -44,7 +44,9 @@ spec:
           - name: revision
             value: main
           - name: pathInRepo
-            value: integration-tests/Tasks/test-image.yaml
+            value: integration-tests/Tasks/run-e2e-konflux-ui-skipped.yaml
       params:
+        # - name: test-image
+        #   value: '$(tasks.run-local.results.test-image)'
         - name: test-image
-          value: '$(tasks.run-local.results.test-image)'
+          value: quay.io/carawang/konflux-ui-test:pr-53
