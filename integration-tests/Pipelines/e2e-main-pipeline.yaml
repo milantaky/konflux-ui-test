@@ -276,7 +276,7 @@ spec:
             value: integration-tests/Tasks/run-e2e-konflux-ui.yaml
       params:
         - name: test-image
-          value: '$(params.oci-container-repo):pr-$(tasks.konflux-ui-pr-metadata.results.pull-request-number)--instrumented'
+          value: '$(params.oci-container-repo):pr-$(tasks.konflux-ui-pr-metadata.results.pull-request-number)'
         - name: test-name
           value: '$(context.pipelineRun.name)'
         - name: git-repo
