@@ -77,6 +77,16 @@ spec:
 
     - name: build-with-kaniko
       image: gcr.io/kaniko-project/executor:debug
+      resources:
+        limits:
+          memory: '8Gi' # Ensure this is higher than max-old-space-size
+          cpu: '2000m'
+        requests:
+          memory: '4Gi'
+          cpu: '1000m'
+      env:
+        - name: NODE_OPTIONS
+          value: '--max-old-space-size=4096' # 4GB or higher (e.g., 8192)
       volumeMounts:
         - name: quay-auth
           mountPath: /secrets/quay
