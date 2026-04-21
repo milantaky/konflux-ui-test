@@ -238,25 +238,25 @@ spec:
           value: 'quay.io/konflux_ui_qe/konflux-ui-tests:pr-$(tasks.konflux-ui-pr-metadata.results.pull-request-number)'
         - name: component-image
           value: '$(tasks.konflux-ui-pr-metadata.results.container-image)'
-    # - name: monitor-webhook-logs
-    #   when:
-    #     - input: '$(tasks.konflux-ui-pr-metadata.results.pull-request-author)'
-    #       operator: notin
-    #       values: ['red-hat-konflux[bot]']
-    #   runAfter:
-    #     - deploy-konflux
-    #   taskRef:
-    #     resolver: git
-    #     params:
-    #       - name: url
-    #         value: https://github.com/abhinandan13jan/konflux-ui-test
-    #       - name: revision
-    #         value: main
-    #       - name: pathInRepo
-    #         value: integration-tests/Tasks/monitor-webhook-logs.yaml
-    #   params:
-    #     - name: monitoring-duration
-    #       value: '5m'
+    - name: monitor-webhook-logs
+      when:
+        - input: '$(tasks.konflux-ui-pr-metadata.results.pull-request-author)'
+          operator: notin
+          values: ['red-hat-konflux[bot]']
+      runAfter:
+        - deploy-konflux
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: https://github.com/abhinandan13jan/konflux-ui-test
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: integration-tests/Tasks/monitor-webhook-logs.yaml
+      params:
+        - name: monitoring-duration
+          value: '5m'
     - name: run-e2e-konflux-ui
       when:
         - input: '$(tasks.konflux-ui-pr-metadata.results.pull-request-author)'
