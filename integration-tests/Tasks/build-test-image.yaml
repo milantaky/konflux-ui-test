@@ -63,18 +63,28 @@ spec:
         git clone https://github.com/abhinandan13jan/konflux-ui-test /workspace/dummy
         cd /workspace/source
         git checkout $(params.git-revision)
+        cp /workspace/dummy/e2e-tests/Containerfile.instrumented /workspace/source/e2e-tests/Containerfile.instrumented
+        cp /workspace/dummy/.dockerignore.instrumented /workspace/source/.dockerignore.instrumented
+        cp /workspace/dummy/.dockerignore.instrumented.cypress /workspace/source/.dockerignore.instrumented.cypress
 
-        # Check if e2e-tests directory has changes compared to target branch
-        git fetch origin $(params.target-branch)
+        rm /workspace/source/.dockerignore
+        cp /workspace/source/.dockerignore.instrumented /workspace/source/.dockerignore
 
-        if git diff --name-only origin/$(params.target-branch)...HEAD | grep -q "^e2e-tests/"; then
-          echo "✅ Changes detected in e2e-tests/"
-          echo "true" > /workspace/build-needed
-        else
-          echo "ℹ️  No changes in e2e-tests/"
-          echo "false" > /workspace/build-needed
-          echo -n "$(params.default-test-image)" > $(results.test-image.path)
-        fi
+        rm /workspace/source/e2e-tests/.dockerignore
+        cp /workspace/source/.dockerignore.instrumented.cypress /workspace/source//e2e-tests/.dockerignore
+
+
+        # # Check if e2e-tests directory has changes compared to target branch
+        # git fetch origin $(params.target-branch)
+
+        # if git diff --name-only origin/$(params.target-branch)...HEAD | grep -q "^e2e-tests/"; then
+        #   echo "✅ Changes detected in e2e-tests/"
+        #   echo "true" > /workspace/build-needed
+        # else
+        #   echo "ℹ️  No changes in e2e-tests/"
+        #   echo "false" > /workspace/build-needed
+        #   echo -n "$(params.default-test-image)" > $(results.test-image.path)
+        # fi
 
     - name: build-with-kaniko
       image: gcr.io/kaniko-project/executor:debug
