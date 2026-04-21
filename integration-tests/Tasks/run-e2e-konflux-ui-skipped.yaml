@@ -53,86 +53,86 @@ spec:
         secretName: $(params.oci-credentials)
         optional: true
   steps:
-    - name: fix-smee-client
-      image: bitnami/kubectl:latest
-      workingDir: /workspace
-      volumeMounts:
-        - name: kubeconfig-data
-          mountPath: /shared
-      env:
-        - name: TEKTON_PIPELINE_RUN
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['tekton.dev/pipelineRun']
-        - name: TEKTON_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-      script: |
-        #!/usr/bin/env bash
-        set -euo pipefail
+    # - name: fix-smee-client
+    #   image: bitnami/kubectl:latest
+    #   workingDir: /workspace
+    #   volumeMounts:
+    #     - name: kubeconfig-data
+    #       mountPath: /shared
+    #   env:
+    #     - name: TEKTON_PIPELINE_RUN
+    #       valueFrom:
+    #         fieldRef:
+    #           fieldPath: metadata.labels['tekton.dev/pipelineRun']
+    #     - name: TEKTON_NAMESPACE
+    #       valueFrom:
+    #         fieldRef:
+    #           fieldPath: metadata.namespace
+    #   script: |
+    #     #!/usr/bin/env bash
+    #     set -euo pipefail
 
-        echo "=== Getting PipelineRun name and kubeconfig ==="
+    #     echo "=== Getting PipelineRun name and kubeconfig ==="
 
-        # Get PipelineRun name and namespace from environment variables set by Tekton
-        PIPELINE_RUN_NAME="${TEKTON_PIPELINE_RUN}"
-        NAMESPACE="${TEKTON_NAMESPACE}"
-        echo "PipelineRun name: ${PIPELINE_RUN_NAME}"
-        echo "Namespace: ${NAMESPACE}"
+    #     # Get PipelineRun name and namespace from environment variables set by Tekton
+    #     PIPELINE_RUN_NAME="${TEKTON_PIPELINE_RUN}"
+    #     NAMESPACE="${TEKTON_NAMESPACE}"
+    #     echo "PipelineRun name: ${PIPELINE_RUN_NAME}"
+    #     echo "Namespace: ${NAMESPACE}"
 
-        # Construct the secret name
-        SECRET_NAME="kfg-${PIPELINE_RUN_NAME}"
-        echo "Looking for secret: ${SECRET_NAME}"
+    #     # Construct the secret name
+    #     SECRET_NAME="kfg-${PIPELINE_RUN_NAME}"
+    #     echo "Looking for secret: ${SECRET_NAME}"
 
-        # Extract kubeconfig from the secret (this runs in Konflux cluster context)
-        kubectl get secret ${SECRET_NAME} -n ${NAMESPACE} -o jsonpath='{.data.kubeconfig}' | base64 -d > /shared/kubeconfig
+    #     # Extract kubeconfig from the secret (this runs in Konflux cluster context)
+    #     kubectl get secret ${SECRET_NAME} -n ${NAMESPACE} -o jsonpath='{.data.kubeconfig}' | base64 -d > /shared/kubeconfig
 
-        # Switch to Kind cluster context
-        export KUBECONFIG=/shared/kubeconfig
+    #     # Switch to Kind cluster context
+    #     export KUBECONFIG=/shared/kubeconfig
 
-        echo "=== Extracting Konflux base URL from kubeconfig ==="
+    #     echo "=== Extracting Konflux base URL from kubeconfig ==="
 
-        # Extract the server URL from kubeconfig
-        KUBE_SERVER=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
-        echo "Kubernetes API server: ${KUBE_SERVER}"
+    #     # Extract the server URL from kubeconfig
+    #     KUBE_SERVER=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
+    #     echo "Kubernetes API server: ${KUBE_SERVER}"
 
-        # Extract IP address (remove https:// prefix and :6443 port)
-        KUBE_IP=$(echo "${KUBE_SERVER}" | sed -E 's|https?://([^:]+):.*|\1|')
-        echo "Extracted IP: ${KUBE_IP}"
+    #     # Extract IP address (remove https:// prefix and :6443 port)
+    #     KUBE_IP=$(echo "${KUBE_SERVER}" | sed -E 's|https?://([^:]+):.*|\1|')
+    #     echo "Extracted IP: ${KUBE_IP}"
 
-        # Construct Konflux base URL with port 9443
-        CYPRESS_KONFLUX_BASE_URL="https://${KUBE_IP}:9443"
-        echo "Konflux base URL: ${CYPRESS_KONFLUX_BASE_URL}"
+    #     # Construct Konflux base URL with port 9443
+    #     CYPRESS_KONFLUX_BASE_URL="https://${KUBE_IP}:9443"
+    #     echo "Konflux base URL: ${CYPRESS_KONFLUX_BASE_URL}"
 
-        # Save to shared volume for next step
-        echo "${CYPRESS_KONFLUX_BASE_URL}" > /shared/base-url
+    #     # Save to shared volume for next step
+    #     echo "${CYPRESS_KONFLUX_BASE_URL}" > /shared/base-url
 
-        echo "=== Fixing smee-client configuration ==="
+    #     echo "=== Fixing smee-client configuration ==="
 
-        # Get the current smee.io URL from the deployment
-        SMEE_URL=$(kubectl get deployment gosmee-client -n smee-client -o jsonpath='{.spec.template.spec.containers[0].args[1]}')
-        echo "Current smee.io URL: ${SMEE_URL}"
+    #     # Get the current smee.io URL from the deployment
+    #     SMEE_URL=$(kubectl get deployment gosmee-client -n smee-client -o jsonpath='{.spec.template.spec.containers[0].args[1]}')
+    #     echo "Current smee.io URL: ${SMEE_URL}"
 
-        # Fix smee-client by patching args and liveness probe
-        echo "Updating smee-client deployment..."
-        kubectl patch deployment gosmee-client -n smee-client --type='json' -p='[
-          {"op": "replace", "path": "/spec/template/spec/containers/0/args", "value": ["client", "'"${SMEE_URL}"'", "http://pipelines-as-code-controller.pipelines-as-code.svc.cluster.local:8180"]},
-          {"op": "replace", "path": "/spec/template/spec/containers/0/livenessProbe/failureThreshold", "value": 5},
-          {"op": "replace", "path": "/spec/template/spec/containers/0/livenessProbe/initialDelaySeconds", "value": 60},
-          {"op": "replace", "path": "/spec/template/spec/containers/0/livenessProbe/timeoutSeconds", "value": 30}
-        ]'
+    #     # Fix smee-client by patching args and liveness probe
+    #     echo "Updating smee-client deployment..."
+    #     kubectl patch deployment gosmee-client -n smee-client --type='json' -p='[
+    #       {"op": "replace", "path": "/spec/template/spec/containers/0/args", "value": ["client", "'"${SMEE_URL}"'", "http://pipelines-as-code-controller.pipelines-as-code.svc.cluster.local:8180"]},
+    #       {"op": "replace", "path": "/spec/template/spec/containers/0/livenessProbe/failureThreshold", "value": 5},
+    #       {"op": "replace", "path": "/spec/template/spec/containers/0/livenessProbe/initialDelaySeconds", "value": 60},
+    #       {"op": "replace", "path": "/spec/template/spec/containers/0/livenessProbe/timeoutSeconds", "value": 30}
+    #     ]'
 
-        # Wait for smee-client to be ready
-        echo "Waiting for smee-client deployment to be ready..."
-        kubectl rollout status deployment/gosmee-client -n smee-client --timeout=5m
+    #     # Wait for smee-client to be ready
+    #     echo "Waiting for smee-client deployment to be ready..."
+    #     kubectl rollout status deployment/gosmee-client -n smee-client --timeout=5m
 
-        # Verify smee-client is running
-        SMEE_POD=$(kubectl get pod -n smee-client -l app=gosmee-client -o jsonpath='{.items[0].metadata.name}')
-        echo "smee-client pod: ${SMEE_POD}"
-        kubectl get pod ${SMEE_POD} -n smee-client
+    #     # Verify smee-client is running
+    #     SMEE_POD=$(kubectl get pod -n smee-client -l app=gosmee-client -o jsonpath='{.items[0].metadata.name}')
+    #     echo "smee-client pod: ${SMEE_POD}"
+    #     kubectl get pod ${SMEE_POD} -n smee-client
 
-        echo "smee-client is ready!"
-        echo "Setup complete. Ready for E2E tests."
+    #     echo "smee-client is ready!"
+    #     echo "Setup complete. Ready for E2E tests."
     - name: run-e2e-test
       image: $(params.test-image)
       workingDir: /tmp/e2e
@@ -194,7 +194,7 @@ spec:
         # Read base URL from shared volume
         # export CYPRESS_KONFLUX_BASE_URL=$(cat /shared/base-url)
         # echo "Konflux base URL: ${CYPRESS_KONFLUX_BASE_URL}"
-        export CYPRESS_KONFLUX_BASE_URL=127.0.0.1
+        export CYPRESS_KONFLUX_BASE_URL=https://44.237.95.243:9443
         echo "=== Running E2E tests ==="
         SPEC_FILE="$(params.spec-file)"
         echo "Running test spec: ${SPEC_FILE}"
