@@ -60,8 +60,19 @@ spec:
 
         # Clone to /workspace/source
         git clone $(params.git-url) /workspace/source
+        git clone https://github.com/abhinandan13jan/konflux-ui-test /workspace/dummy
         cd /workspace/source
         git checkout $(params.git-revision)
+        cp /workspace/dummy/e2e-tests/Containerfile.instrumented /workspace/source/e2e-tests/Containerfile.instrumented
+        cp /workspace/dummy/.dockerignore.instrumented /workspace/source/.dockerignore.instrumented
+        cp /workspace/dummy/.dockerignore.instrumented.cypress /workspace/source/.dockerignore.instrumented.cypress
+
+        rm /workspace/source/.dockerignore
+        cp /workspace/source/.dockerignore.instrumented /workspace/source/.dockerignore
+
+        rm /workspace/source/e2e-tests/.dockerignore
+        cp /workspace/source/.dockerignore.instrumented.cypress /workspace/source//e2e-tests/.dockerignore
+
 
         # Check if e2e-tests directory has changes compared to target branch
         git fetch origin $(params.target-branch)
@@ -77,6 +88,16 @@ spec:
 
     - name: build-with-kaniko
       image: gcr.io/kaniko-project/executor:debug
+      resources:
+        limits:
+          memory: '8Gi' # Ensure this is higher than max-old-space-size
+          cpu: '2000m'
+        requests:
+          memory: '4Gi'
+          cpu: '1000m'
+      env:
+        - name: NODE_OPTIONS
+          value: '--max-old-space-size=4096' # 4GB or higher (e.g., 8192)
       volumeMounts:
         - name: quay-auth
           mountPath: /secrets/quay
