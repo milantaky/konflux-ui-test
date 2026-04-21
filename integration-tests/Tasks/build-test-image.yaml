@@ -51,11 +51,11 @@ spec:
         optional: true
   steps:
     - name: clone-and-check
-      image: alpine/git:latest
+      image: node:lts-alpine
       script: |
         #!/bin/sh
         set -eu
-
+        apk add git
         echo "=== Cloning repository and checking for changes ==="
 
         # Clone to /workspace/source
@@ -63,17 +63,17 @@ spec:
         cd /workspace/source
         git checkout $(params.git-revision)
 
-        # Check if e2e-tests directory has changes compared to target branch
-        git fetch origin $(params.target-branch)
+        # # Check if e2e-tests directory has changes compared to target branch
+        # git fetch origin $(params.target-branch)
 
-        if git diff --name-only origin/$(params.target-branch)...HEAD | grep -q "^e2e-tests/"; then
-          echo "✅ Changes detected in e2e-tests/"
-          echo "true" > /workspace/build-needed
-        else
-          echo "ℹ️  No changes in e2e-tests/"
-          echo "false" > /workspace/build-needed
-          echo -n "$(params.default-test-image)" > $(results.test-image.path)
-        fi
+        # if git diff --name-only origin/$(params.target-branch)...HEAD | grep -q "^e2e-tests/"; then
+        #   echo "✅ Changes detected in e2e-tests/"
+        #   echo "true" > /workspace/build-needed
+        # else
+        #   echo "ℹ️  No changes in e2e-tests/"
+        #   echo "false" > /workspace/build-needed
+        #   echo -n "$(params.default-test-image)" > $(results.test-image.path)
+        # fi
 
     - name: build-with-kaniko
       image: gcr.io/kaniko-project/executor:debug
@@ -96,14 +96,14 @@ spec:
       args:
         - -c
         - |
-          #BUILD_NEEDED=$(cat /workspace/build-needed)
-          BUILD_NEEDED="true"
+          # #BUILD_NEEDED=$(cat /workspace/build-needed)
+          # BUILD_NEEDED="true"
 
-          if [ "$BUILD_NEEDED" = "false" ]; then
-            echo "⏭️  Skipping build (no changes in e2e-tests/)"
-            echo "    Using default image: $(params.default-test-image)"
-            exit 0
-          fi
+          # if [ "$BUILD_NEEDED" = "false" ]; then
+          #   echo "⏭️  Skipping build (no changes in e2e-tests/)"
+          #   echo "    Using default image: $(params.default-test-image)"
+          #   exit 0
+          # fi
 
           echo "=== Building test image with Kaniko ==="
 
