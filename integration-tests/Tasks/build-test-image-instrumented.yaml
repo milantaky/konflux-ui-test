@@ -125,7 +125,7 @@ spec:
             --skip-tls-verify
 
           echo -n "$IMAGE_DESTINATION" > $(results.test-image.path)
-          echo "✅ Image built and pushed: $$IMAGE_DESTINATION"
+          echo "✅ Image built and pushed: $IMAGE_DESTINATION"
 
     - name: show-result
       image: alpine:latest
