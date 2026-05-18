@@ -80,7 +80,7 @@ spec:
         resolver: git
         params:
           - name: url
-            value: https://github.com/abhinandan13jan/konflux-ui-test
+            value: https://github.com/milantaky/konflux-ui-test
           - name: revision
             value: main
           - name: pathInRepo
@@ -95,7 +95,7 @@ spec:
         resolver: git
         params:
           - name: url
-            value: https://github.com/abhinandan13jan/konflux-ui-test
+            value: https://github.com/milantaky/konflux-ui-test
           - name: revision
             value: main
           - name: pathInRepo
@@ -111,7 +111,7 @@ spec:
         resolver: git
         params:
           - name: url
-            value: https://github.com/abhinandan13jan/konflux-ui-test
+            value: https://github.com/milantaky/konflux-ui-test
           - name: revision
             value: main
           - name: pathInRepo
@@ -214,7 +214,7 @@ spec:
         resolver: git
         params:
           - name: url
-            value: https://github.com/abhinandan13jan/konflux-ui-test
+            value: https://github.com/milantaky/konflux-ui-test
           - name: revision
             value: main
           - name: pathInRepo
@@ -249,7 +249,7 @@ spec:
         resolver: git
         params:
           - name: url
-            value: https://github.com/abhinandan13jan/konflux-ui-test
+            value: https://github.com/milantaky/konflux-ui-test
           - name: revision
             value: main
           - name: pathInRepo
@@ -269,7 +269,7 @@ spec:
         resolver: git
         params:
           - name: url
-            value: https://github.com/abhinandan13jan/konflux-ui-test
+            value: https://github.com/milantaky/konflux-ui-test
           - name: revision
             value: main
           - name: pathInRepo
@@ -381,7 +381,7 @@ spec:
         resolver: git
         params:
           - name: url
-            value: https://github.com/testcara/konflux-ui-test
+            value: https://github.com/milantaky/konflux-ui-test
           - name: revision
             value: main
           - name: pathInRepo
