@@ -21,7 +21,7 @@ spec:
       description: The name of secret where testing infrastructures credentials are stored.
       type: string
     - name: oci-container-repo
-      default: 'quay.io/carawang/konflux-ui-test'
+      default: 'quay.io/mtakac-tenant/konflux-ui-test'
       description: The ORAS container used to store all test artifacts.
     - name: e2e-artifacts-repo
       default: 'quay.io/konflux_ui_qe/pr-check-artefacts'

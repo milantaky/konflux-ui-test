@@ -3,7 +3,7 @@ kind: Task
 metadata:
   name: run-e2e-konflux-ui
   annotations:
-    tekton.dev/displayName: 'konflux-ui-e2e-tests'
+    tekton.dev/displayName: 'konflux-ui-e2e-tests' #trigger
     tekton.dev/categories: 'Pipeline'
     tekton.dev/tags: 'e2e,cypress,konflux-ui'
 spec:
