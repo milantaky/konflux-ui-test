@@ -108,7 +108,7 @@ spec:
 
         # Construct job URL dynamically
         JOB_URL="${CONSOLE_URL}/workspaces/${TEKTON_NAMESPACE}/pipelineruns/${TEKTON_PIPELINE_RUN}"
-        MESSAGE="${MESSAGE} ${JOB_URL}"
+        MESSAGE="${MESSAGE} TEST TEST TEST ${JOB_URL}"
 
         echo "Status: ${EXIT_STATUS}"
         echo "Message: ${MESSAGE}"
