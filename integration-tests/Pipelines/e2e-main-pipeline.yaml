@@ -131,7 +131,7 @@ spec:
         - input: '$(params.skip-provision)'
           operator: in
           values: ['false']
-      taskRef:
+      taskRef: #some trig
         resolver: git
         params:
           - name: url
