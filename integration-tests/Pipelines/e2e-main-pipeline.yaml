@@ -335,7 +335,7 @@ spec:
           value: kfg-$(context.pipelineRun.name)
         - name: oci-container
           value: $(params.oci-container-repo):$(context.pipelineRun.name)
-        - name: oci-credentials
+        - name: oci-credentials #trig
           value: $(params.oci-credentials-secret)
     # - name: pull-request-status-message
     #   when:
