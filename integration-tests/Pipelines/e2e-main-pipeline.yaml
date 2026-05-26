@@ -232,7 +232,7 @@ spec:
           value: 'quay.io/konflux_ui_qe/konflux-ui-tests:latest'
         - name: test-image-repo
           value: '$(params.oci-container-repo)'
-        - name: quay-secret
+        - name: quay-secret #sjss
           value: $(params.oci-credentials-secret)
         - name: pr-test-image
           value: 'quay.io/konflux_ui_qe/konflux-ui-tests:pr-$(tasks.konflux-ui-pr-metadata.results.pull-request-number)'
