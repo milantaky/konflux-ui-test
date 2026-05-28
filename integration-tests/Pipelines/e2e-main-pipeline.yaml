@@ -380,7 +380,7 @@ spec:
       taskRef:
         resolver: git
         params:
-          - name: url
+          - name: url #trigger
             value: https://github.com/milantaky/konflux-ui-test
           - name: revision
             value: main
