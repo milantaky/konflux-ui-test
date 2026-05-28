@@ -202,7 +202,8 @@ spec:
         # Run tests and capture exit code (don't exit on failure)
         set +e
         # CYPRESS_GH_TOKEN=${CYPRESS_GH_TOKEN} CYPRESS_LOCAL_CLUSTER=true CYPRESS_KONFLUX_BASE_URL=${CYPRESS_KONFLUX_BASE_URL} yarn run cy:run --spec "${SPEC_FILE}"
-        CYPRESS_GH_TOKEN=${CYPRESS_GH_TOKEN} CYPRESS_LOCAL_CLUSTER=true CYPRESS_KONFLUX_BASE_URL=${CYPRESS_KONFLUX_BASE_URL} node /tmp/e2e/.yarn/releases/yarn-4.12.0.cjs run cy:run --spec "${SPEC_FILE}" ##tady uprava
+        YARN_PATH=$(find / -name "yarn-4.12.0.cjs" 2>/dev/null | head -n 1)
+        CYPRESS_GH_TOKEN=${CYPRESS_GH_TOKEN} CYPRESS_LOCAL_CLUSTER=true CYPRESS_KONFLUX_BASE_URL=${CYPRESS_KONFLUX_BASE_URL} node "$YARN_PATH" run cy:run --spec "${SPEC_FILE}"
         TEST_RESULT=$?
         set -e
 
