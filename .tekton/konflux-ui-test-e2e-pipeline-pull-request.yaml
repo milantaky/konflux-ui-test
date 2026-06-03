@@ -123,6 +123,10 @@ spec:
       name: CHAINS-GIT_COMMIT
       value: $(tasks.clone-repository.results.commit)
     tasks:
+    - name: init
+      # Tímto říkáme Tektonu, že init NESMÍ běžet, dokud introduce-flakiness neskončí úspěšně
+      runAfter:
+      - introduce-flakiness
       params:
       - name: enable-cache-proxy
         value: $(params.enable-cache-proxy)
