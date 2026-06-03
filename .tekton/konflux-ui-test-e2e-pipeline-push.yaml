@@ -120,7 +120,6 @@ spec:
       name: CHAINS-GIT_COMMIT
       value: $(tasks.clone-repository.results.commit)
     tasks:
-    tasks:
     - name: introduce-flakiness
       taskSpec:
         steps:
@@ -136,7 +135,6 @@ spec:
               echo "🎲 Flaky guard: Prošel jsi, build pokračuje. $RANDOM_VAL"
               exit 0
             fi
-
     - name: init
       runAfter:
       - introduce-flakiness
