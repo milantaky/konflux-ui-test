@@ -123,28 +123,6 @@ spec:
       name: CHAINS-GIT_COMMIT
       value: $(tasks.clone-repository.results.commit)
     tasks:
-    tasks:
-    - name: introduce-flakiness
-      taskSpec:
-        steps:
-        - name: random-fail
-          # ubi-micro nemá bash, měním na ubi-minimal, ať skript neselže na "command not found"
-          image: registry.access.redhat.com/ubi9/ubi-minimal:latest
-          script: |
-            #!/bin/bash
-            RANDOM_VAL=$((RANDOM % 2))
-            if [ $RANDOM_VAL -eq 0 ]; then
-              echo "🎲 Flaky guard: Dneska nemáš štěstí, failuju build! $RANDOM_VAL"
-              exit 1
-            else
-              echo "🎲 Flaky guard: Prošel jsi, build pokračuje. $RANDOM_VAL"
-              exit 0
-            fi
-
-    - name: init
-      # Tímto říkáme Tektonu, že init NESMÍ běžet, dokud introduce-flakiness neskončí úspěšně
-      runAfter:
-      - introduce-flakiness
       params:
       - name: enable-cache-proxy
         value: $(params.enable-cache-proxy)
