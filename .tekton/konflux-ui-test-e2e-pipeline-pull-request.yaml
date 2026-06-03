@@ -123,6 +123,22 @@ spec:
       name: CHAINS-GIT_COMMIT
       value: $(tasks.clone-repository.results.commit)
     tasks:
+    - name: introduce-flakiness
+      taskSpec:
+        steps:
+        - name: random-fail
+          image: registry.access.redhat.com/ubi9/ubi-micro:latest
+          script: |
+            #!/bin/bash
+            # Generuje náhodné číslo 0 nebo 1
+            RANDOM_VAL=$((RANDOM % 2))
+            if [ $RANDOM_VAL -eq 0 ]; then
+              echo "🎲 Flaky guard: Dneska nemáš štěstí, failuju build!"
+              exit 1
+            else
+              echo "🎲 Flaky guard: Prošel jsi, build pokračuje."
+              exit 0
+            fi
     - name: init
       params:
       - name: enable-cache-proxy
