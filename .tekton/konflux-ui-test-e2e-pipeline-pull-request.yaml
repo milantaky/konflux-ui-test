@@ -134,10 +134,10 @@ spec:
             #!/bin/bash
             RANDOM_VAL=$((RANDOM % 2))
             if [ $RANDOM_VAL -eq 0 ]; then
-              echo "🎲 Flaky guard: Dneska nemáš štěstí, failuju build!"
+              echo "🎲 Flaky guard: Dneska nemáš štěstí, failuju build! $RANDOM_VAL"
               exit 1
             else
-              echo "🎲 Flaky guard: Prošel jsi, build pokračuje."
+              echo "🎲 Flaky guard: Prošel jsi, build pokračuje. $RANDOM_VAL"
               exit 0
             fi
 
