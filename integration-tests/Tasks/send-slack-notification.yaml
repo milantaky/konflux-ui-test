@@ -34,7 +34,7 @@ spec:
       default: 'https://console.redhat.com/preview/application-pipeline'
       description: 'Console base URL (e.g., https://console.redhat.com/preview/application-pipeline)'
   steps:
-    - name: send-notification
+    - name: send-notification #trigger222
       image: registry.access.redhat.com/ubi9/ubi-minimal:latest
       env:
         - name: PIPELINE_STATUS
@@ -108,7 +108,7 @@ spec:
 
         # Construct job URL dynamically
         JOB_URL="${CONSOLE_URL}/workspaces/${TEKTON_NAMESPACE}/pipelineruns/${TEKTON_PIPELINE_RUN}"
-        MESSAGE="${MESSAGE} ${JOB_URL}"
+        MESSAGE="${MESSAGE} ${JOB_URL} !!!!This is a test message from Milan!!!"
 
         echo "Status: ${EXIT_STATUS}"
         echo "Message: ${MESSAGE}"
