@@ -34,7 +34,7 @@ spec:
       default: 'https://console.redhat.com/preview/application-pipeline'
       description: 'Console base URL (e.g., https://console.redhat.com/preview/application-pipeline)'
   steps:
-    - name: send-notification #trigger
+    - name: send-notification #trigger2
       image: registry.access.redhat.com/ubi9/ubi-minimal:latest
       env:
         - name: PIPELINE_STATUS
