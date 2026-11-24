@@ -465,10 +465,10 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.13.2.tgz#0aa167216965ac9474ccfa83892cfb6b3e1e52ef"
   integrity sha512-lHe62zvbTB5eEABUVi/AwVh0ZKY9rMMDhmm+eeyuuUQbQ3+J+fONVQOZyj+DdrvD4BY33uYniyRJ4UJIaSKAfw==
 
-axe-core@^4.4.2:
-  version "4.11.0"
-  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.11.0.tgz#16f74d6482e343ff263d4f4503829e9ee91a86b6"
-  integrity sha512-ilYanEU8vxxBexpJd8cWM4ElSQq4QctCLKih0TSfjIfCQTeyH/6zVrmIJfLPrKTKJRbiG+cfnZbQIjAlJmF1jQ==
+axe-core@^4.10.2:
+  version "4.14.1"
+  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.14.1.tgz#14d8a6f3f085afd126b8b5ca1e42e50e17fb1d99"
+  integrity sha512-FHfa+lmNjQZfJz1q8wKqIDwC6DExcHt/pkjNQb09a3NPjCKg2rhu5qb2S4r76ASyFNNtuFooJpZe37OgudVGtQ==
 
 balanced-match@^1.0.0:
   version "1.0.2"
@@ -812,12 +812,13 @@ cypress-multi-reporters@^1.6.0:
     lodash "^4.17.21"
 
 cypress-terminal-report@^7.1.0:
-  version "7.3.3"
-  resolved "https://registry.yarnpkg.com/cypress-terminal-report/-/cypress-terminal-report-7.3.3.tgz#7ebc23559a7c2da0ca937402b1e0d88b6544a213"
-  integrity sha512-fj543YnOrA3B7gTQEOLvcnvxzmYDNpdO2IOgoY518o+x8Z3foknE4nnZLTa4kOHWD6aOMdOvGSls8moAUglMOA==
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/cypress-terminal-report/-/cypress-terminal-report-7.5.0.tgz#92c76798e72676e4e1d7271f69048aa5ce8ffd25"
+  integrity sha512-EXwzZztWgbW8iucwF4OBaxTsRXDRrG/78DRvVE3TdLyh1OGVJw/sALDgjCC2jTsTGzPlOdm1FVvOlWNep1+qKQ==
   dependencies:
     chalk "^4.0.0"
     compare-versions "^6.1.1"
+    flatted "^3.4.4"
     superstruct "0.14.2"
 
 cypress@^15.7.0:
@@ -943,7 +944,7 @@ decamelize@^1.2.0:
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
   integrity sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==
 
-deepmerge@^4.2.2:
+deepmerge@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-4.3.1.tgz#44b5f2147cd3b00d4b56137685966f26fd25dd4a"
   integrity sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==
@@ -1253,6 +1254,11 @@ find-up@^4.0.0, find-up@^4.1.0:
   dependencies:
     locate-path "^5.0.0"
     path-exists "^4.0.0"
+
+flatted@^3.4.4:
+  version "3.4.4"
+  resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.4.4.tgz#aeeca2a506303f0cee61c59e6c9f2a88d2f29fc6"
+  integrity sha512-5+ybhBZANEJxaH3X5evAFatUxLfEHSr7n6kYJ+1Qd0mUqr4eu9gIf6GDbWHf8RJijHrjjO8G+la14SlL2SeS1Q==
 
 for-each@^0.3.3, for-each@^0.3.5:
   version "0.3.5"
@@ -2116,7 +2122,7 @@ mkdirp@^3.0.0:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-3.0.1.tgz#e44e4c5607fb279c168241713cc6e0fea9adcb50"
   integrity sha512-+NsyUUAZDmo6YVHzL/stxSu3t9YS1iljliy3BSDrXJ/dkn1KYdmtZODGGjLcc9XLgVVpH4KshHB8XmZgMhaBXg==
 
-mocha-junit-reporter@^2.0.2:
+mocha-junit-reporter@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/mocha-junit-reporter/-/mocha-junit-reporter-2.2.1.tgz#739f5595d0f051d07af9d74e32c416e13a41cde5"
   integrity sha512-iDn2tlKHn8Vh8o4nCzcUVW4q7iXp7cC4EB78N0cDHIobLymyHNwe0XG8HEHHjc3hJlXm0Vy6zcrxaIhnI2fWmw==
